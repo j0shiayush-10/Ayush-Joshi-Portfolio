@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#263238">
+<meta name="description" content="Ayush Joshi — a retro early-2000s Indian home-computer portfolio for GRC and cybersecurity.">
+<title>Ayush Joshi — My Computer</title>
+<style>
+:root{
+  --crt-bezel:clamp(8px,2vw,24px);
+  --desk:#1f6f73;--desk2:#2c8583;--cream:#eee9d6;--win:#c7c7c7;--win2:#dedede;
+  --blue:#173b91;--ink:#111;--muted:#4b4b4b;--shadow:#1118;--task:#c6c6c6;
+  --green:#188038;--yellow:#e7d15a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;overscroll-behavior:none}
+body{font-family:Tahoma,Arial,sans-serif;background:#111;color:#111;cursor:default;min-width:0;min-height:0}
+button,input{font:inherit}
+button{color:#111}
+button:focus-visible,.icon:focus-visible,.menu-item:focus-visible,.ctx-item:focus-visible,.project:focus-visible{outline:2px dotted #fffb8a;outline-offset:2px}
+#crt{position:fixed;inset:0;z-index:10000;pointer-events:none;border:var(--crt-bezel) solid #16191a;border-radius:2.5% 2.5% 1.5% 1.5%;box-shadow:inset 0 0 60px #000b,0 0 0 4px #333;mix-blend-mode:normal}
+#crt:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,#0000 0,#0000 3px,#00000010 4px);opacity:.45}
+#crt:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,#0000 48%,#0008 100%);opacity:.38}
+body.reduce #crt:before,body.reduce #crt:after{display:none}
+#boot{position:fixed;inset:0;z-index:9000;background:#07111b;display:grid;place-items:center;color:#fff;transition:opacity .45s}
+#boot.hidden{opacity:0;pointer-events:none}
+.bootbox{text-align:center;padding:24px;max-width:95vw}
+.bootname{font-family:"Courier New",Tahoma,monospace;font-size:clamp(3.2rem,11vw,8.5rem);font-weight:900;letter-spacing:.01em;text-shadow:0 0 8px #fff6,2px 2px 0 #1b5fae;line-height:1.05}
+.bootsub{margin-top:18px;font:600 clamp(.9rem,2vw,1.1rem) "Courier New",monospace;color:#b9d9ff}
+.boothint{margin-top:30px;font-size:.75rem;color:#71829a;letter-spacing:.12em;text-transform:uppercase}
+#desktop{position:fixed;inset:var(--crt-bezel);width:auto;height:auto;overflow:hidden;background:
+ radial-gradient(circle at 25% 15%,#ffffff18 0 2px,#0000 3px),
+ linear-gradient(145deg,var(--desk2),var(--desk) 52%,#17585d);
+}
+#desktop:before{content:"";position:absolute;inset:0;opacity:.16;background:
+ repeating-linear-gradient(0deg,#0000 0 6px,#fff 7px,#0000 8px),
+ radial-gradient(circle at 30% 80%,#c69b6320 0 1px,#0000 2px);
+pointer-events:none}
+.desktop-grid{position:absolute;inset:18px 18px 48px;display:flex;flex-direction:column;align-content:flex-start;flex-wrap:wrap;gap:7px 14px}
+.icon{width:84px;min-height:82px;padding:4px;border:1px solid #0000;color:white;background:#0000;text-shadow:1px 1px #000;display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:2px}
+.icon:hover,.icon.selected{background:#124d70aa;border-color:#8bd7ff88}
+.ico{width:42px;height:38px;position:relative;filter:drop-shadow(1px 2px 1px #0007)}
+.ico.folder{background:#e8c65a;border:2px solid #80650c;border-radius:2px;margin-top:7px}
+.ico.folder:before{content:"";position:absolute;left:2px;top:-8px;width:19px;height:10px;background:#e8c65a;border:2px solid #80650c;border-bottom:0;border-radius:2px 2px 0 0}
+.ico.file{background:#fff;border:2px solid #777;border-radius:1px}
+.ico.file:after{content:"";position:absolute;right:-2px;top:-2px;border-left:11px solid transparent;border-bottom:11px solid #bbb}
+.ico.recycle{border:3px dashed #eee;border-radius:50%}
+.ico.recycle:after{content:"↻";font:bold 30px Arial;color:#eee;position:absolute;left:5px;top:0}
+.ico.pc{background:#bbb;border:2px solid #555;border-radius:3px}
+.ico.pc:before{content:"";position:absolute;left:5px;top:5px;width:28px;height:20px;background:#1c3e6b;border:2px solid #222}
+.ico.paint{background:#f3cf7b;border:2px solid #7a4e2d;border-radius:50%}
+.ico.paint:after{content:"";position:absolute;right:-5px;bottom:-5px;width:12px;height:20px;background:#9b6b3e;transform:rotate(25deg)}
+.label{font-size:12px;line-height:14px;text-align:center;max-width:80px}
+#taskbar{position:absolute;left:0;right:0;bottom:0;height:40px;box-sizing:border-box;background:linear-gradient(#e2e2e2,#a9a9a9);border-top:2px solid #eee;display:flex;align-items:center;padding:2px 5px;z-index:4000;box-shadow:0 -1px 3px #0005}
+#startBtn{height:29px;min-width:82px;font-weight:bold;color:#fff;border:2px outset #aaa;background:linear-gradient(#4caa55,#19722d);border-radius:2px;display:flex;align-items:center;gap:5px;cursor:pointer}
+#startBtn .logo{font-size:18px;line-height:1}
+#tasks{display:flex;gap:3px;margin-left:6px;overflow:hidden;flex:1 1 0;min-width:0}
+.task{height:27px;min-width:0;max-width:180px;flex:1 1 0;border:2px inset #aaa;background:#d0d0d0;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:3px 7px;cursor:pointer}
+.task.active{background:#eee;border-style:outset;font-weight:bold}
+#clock{font:12px "Courier New",monospace;padding:5px 8px;border:2px inset #aaa;background:#d7d7d7;min-width:70px;flex:0 0 70px;text-align:center}
+#startMenu{position:absolute;bottom:40px;left:4px;width:270px;background:#e8e8e8;border:2px outset #fff;box-shadow:4px 4px 10px #0007;z-index:5000;display:none}
+#startMenu.open{display:block}
+.start-head{height:54px;background:linear-gradient(90deg,#24559c,#173878);color:white;padding:7px 10px;font-weight:bold;font-size:17px}
+.start-head small{display:block;font-size:11px;font-weight:normal;opacity:.85;margin-top:3px}
+.menu-item{padding:11px 14px;border-bottom:1px solid #bbb;cursor:pointer;background:#eee}
+.menu-item:hover{background:#24559c;color:#fff}
+.menu-item span{float:right;color:#555}.menu-item:hover span{color:#fff}
+.window{position:absolute;width:min(560px,calc(100% - 24px));max-width:calc(100% - 24px);min-height:220px;background:var(--win);border:2px outset #fff;box-shadow:7px 8px 18px #0008;z-index:1000;display:none;transform-origin:center center}
+.window.open{display:block}
+.window.window-opening{animation:windowOpening .18s linear both}
+.window.window-minimizing{animation:windowMinimizing .19s linear both}
+.window.window-restoring{animation:windowRestoring .19s linear both}
+.window.window-closing{animation:windowClosing .18s linear both}
+@keyframes windowOpening{from{transform:scale(.94);opacity:0}to{transform:none;opacity:1}}
+@keyframes windowMinimizing{from{transform:none;opacity:1}to{transform:translate(var(--task-dx,0px),var(--task-dy,0px)) scale(.08);opacity:0}}
+@keyframes windowRestoring{from{transform:translate(var(--task-dx,0px),var(--task-dy,0px)) scale(.08);opacity:0}to{transform:none;opacity:1}}
+@keyframes windowClosing{from{transform:none;opacity:1}to{transform:scale(.94);opacity:0}}
+.titlebar{height:28px;background:linear-gradient(90deg,#143b8f,#4777c6);color:#fff;display:flex;align-items:center;padding:2px 3px 2px 7px;font-weight:bold;font-size:13px;cursor:grab;user-select:none}
+.titlebar:active{cursor:grabbing}
+.titletext{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.winbuttons{display:flex;gap:2px}.winbuttons button{width:22px;height:21px;padding:0;border:2px outset #eee;background:#c8c8c8;font-weight:bold;line-height:15px}
+.winbody{padding:12px;background:#d8d8d8;max-height:calc(100dvh - 104px);overflow:auto}
+.notepad{background:#fff;border:2px inset #aaa;padding:14px;min-height:240px;font:14px/1.55 "Courier New",monospace;white-space:pre-wrap}
+.props{background:#efefef;border:2px inset #aaa;padding:15px}.props h3{margin:0 0 10px;font-size:16px}
+.skill{margin:12px 0}.skill-row{display:flex;justify-content:space-between;font-size:12px;font-weight:bold;margin-bottom:3px}
+.bar{height:16px;border:2px inset #999;background:#eee;padding:1px}.bar i{display:block;height:100%;background:repeating-linear-gradient(90deg,#1c7f38 0 10px,#2aa34a 10px 12px);width:0}
+.doc{background:#fff;border:2px inset #999;padding:16px;min-height:210px}.doc h2{font:700 20px Georgia,serif;margin:0 0 5px}.doc .meta{font:11px "Courier New";color:#666;border-bottom:1px solid #aaa;padding-bottom:8px;margin-bottom:12px}.doc p{font-size:13px;line-height:1.5}.doc a{color:#0000ee}.doc .stamp{display:inline-block;border:2px solid #b33;color:#b33;padding:3px 7px;font:700 11px "Courier New";transform:rotate(-3deg);margin-top:8px}
+.projects{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#fff;border:2px inset #aaa;padding:12px}
+.project{background:#fff;border:1px solid #777;padding:7px;text-align:center;cursor:pointer;min-height:100px}.project:hover{background:#dce7fa}.project .ico{margin:auto}
+.chat{background:#e9f3ff;border:2px inset #999;padding:8px;height:320px;overflow:auto}
+.msg{margin:6px 0;max-width:90%;font-size:12px}.msg b{color:#17458f}.msg.me{margin-left:auto;text-align:right}.bubble{display:inline-block;background:#fff;border:1px solid #8fa8c4;border-radius:5px;padding:5px 7px;text-align:left}
+.chatbar{display:flex;gap:4px;margin-top:7px}.chatbar input{flex:1;border:2px inset #aaa;padding:5px}.chatbar button{border:2px outset #fff;background:#ccc;padding:4px 9px}
+.recycle{background:#fff;border:2px inset #aaa;padding:12px}.deleted{display:flex;gap:10px;align-items:center;border:1px dotted #777;padding:9px;cursor:pointer}.deleted:hover{background:#eee}
+.about{background:#f4f1e8;border:2px inset #aaa;padding:15px;font-size:13px;line-height:1.5}.spec{font-family:"Courier New";font-size:12px}
+#ctx{position:absolute;display:none;z-index:7000;width:190px;background:#eee;border:2px outset #fff;box-shadow:4px 4px 8px #0008;font-size:12px}
+.ctx-item{padding:8px 10px;cursor:pointer}.ctx-item:hover{background:#24559c;color:#fff}.ctx-sep{border-top:1px solid #aaa;margin:2px 0}
+#wallpapers{display:none;position:absolute;z-index:8000;right:25px;bottom:42px;background:#eee;border:2px outset #fff;padding:10px;width:220px;box-shadow:4px 4px 10px #0008}
+.wall{height:42px;border:2px inset #aaa;margin:6px 0;cursor:pointer;padding:12px;font:11px "Courier New"}.wall:hover{border-style:outset}
+#toast{position:fixed;right:22px;bottom:48px;background:#111;color:#fff;border:1px solid #ddd;padding:7px 10px;font:11px "Courier New";z-index:9500;opacity:0;transform:translateY(8px);transition:.18s;pointer-events:none}
+#toast.show{opacity:1;transform:none}
+#matrix{position:fixed;inset:0;z-index:8500;background:#000;display:none;overflow:hidden;color:#6f6;font:14px "Courier New";opacity:.92}
+#matrix canvas{width:100%;height:100%}
+#antivirus{width:390px;max-width:calc(100vw - 30px);z-index:8200}.av{background:#f3f3f3;border:2px inset #aaa;padding:16px}.av h2{font-size:16px;margin:0 0 12px}.ok{font-size:30px;color:var(--green);font-weight:bold}
+.shutdown{position:fixed;inset:0;z-index:8800;background:#06101c;color:#fff;display:none;place-items:center;text-align:center}.shutdown.show{display:grid}.shutdown h1{font:700 28px "Courier New"}.shutdown p{color:#9aa}
+@media(max-width:700px){
+ :root{--crt-bezel:6px}
+ #crt{border-radius:1%}
+ .desktop-grid{inset:12px 10px 48px;display:grid;grid-template-columns:repeat(3,minmax(70px,1fr));grid-auto-rows:86px;gap:8px}
+ .icon{width:100%;min-height:80px}
+ .window{width:min(560px,calc(100% - 24px));max-width:calc(100% - 24px);min-height:180px;max-height:calc(100dvh - 58px)}
+ .winbody{max-height:calc(100dvh - 104px);height:auto}
+ .titlebar{cursor:grab;touch-action:none}
+ .projects{grid-template-columns:repeat(2,1fr)}
+ #startMenu{width:calc(100vw - 18px);left:9px}
+ #tasks{display:flex;min-width:0;overflow:hidden;gap:2px;margin-left:4px;flex:1 1 0}
+ .task{min-width:44px;max-width:112px;flex:1 1 0;padding:3px 5px;font-size:10px}
+ #clock{margin-left:auto;min-width:54px;flex-basis:54px;font-size:10px;padding:5px 3px}
+ #startBtn{min-width:64px;padding:0 5px;font-size:11px}
+ .winbuttons{gap:1px}.winbuttons button{width:21px}
+}
+.pdf-loading{min-height:210px;background:#fff;border:2px inset #999;padding:28px 18px;display:flex;flex-direction:column;justify-content:center;gap:12px;font:12px "Courier New",monospace;color:#222}.pdf-loading .bar{width:100%;height:16px;border:2px inset #999;background:#eee;padding:1px;overflow:hidden}.pdf-loading .bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,#1c7f38 0 10px,#2aa34a 10px 12px);transition:width .55s linear}.pdf-loading .loading-caption{font-weight:bold}
+#login{position:fixed;inset:0;z-index:8900;background:#173b91;display:none;place-items:center;color:#111}
+#login.show{display:grid}
+.loginbox{width:min(520px,calc(100vw - 28px));background:#c9c9c9;border:2px outset #fff;box-shadow:8px 8px 18px #0009}
+.loginhead{background:linear-gradient(90deg,#143b8f,#4777c6);color:#fff;padding:12px 15px;font-weight:bold;font-size:18px}
+.loginbody{display:flex;gap:18px;align-items:center;padding:22px}.useravatar{width:78px;height:78px;flex:0 0 78px;background:#eee;border:2px inset #aaa;display:grid;place-items:center;font-size:42px}.loginfields{flex:1;min-width:0}.loginfields label{display:block;font-size:12px;font-weight:bold;margin-bottom:4px}.loginfields input{width:100%;padding:7px;border:2px inset #aaa;background:#fff;margin-bottom:8px}.loginhint{font:11px "Courier New",monospace;color:#444;margin-bottom:10px}.loginbtn{border:2px outset #fff;background:#ccc;padding:7px 14px;font-weight:bold;cursor:pointer}.loginbtn:focus-visible,#powerOn:focus-visible{outline:2px dotted #fffb8a;outline-offset:3px}.loginfoot{border-top:1px solid #aaa;padding:8px 14px;font-size:11px;color:#555}
+.window.maximized{left:6px!important;top:6px!important;width:calc(100% - 12px)!important;height:calc(100% - 52px)!important;max-width:none!important;min-height:0!important;max-height:none!important}.window.maximized .winbody{height:calc(100% - 32px);max-height:none;overflow:auto}
+#poweredOff{position:fixed;inset:0;z-index:9900;background:#020304;color:#aaa;display:none;place-items:center;text-align:center}#poweredOff.show{display:grid}#powerOn{width:82px;height:82px;border-radius:50%;border:3px outset #f1f1f1;background:radial-gradient(circle at 38% 32%,#f4f4f4 0,#bdbdbd 18%,#777 43%,#3b3b3b 70%,#171717 100%);color:#111;font-size:40px;cursor:pointer;box-shadow:inset 2px 2px 0 #fff9,inset -3px -3px 0 #111c,0 0 0 3px #263b46,0 0 18px #5ba7b966;display:grid;place-items:center;text-shadow:0 1px 0 #fff8}\n#powerOn:active{border-style:inset;box-shadow:inset 3px 3px 5px #1119,inset -1px -1px 0 #fff8,0 0 0 3px #263b46,0 0 10px #5ba7b944;transform:translateY(1px)}.powerLabel{position:absolute;top:calc(50% + 55px);font:12px "Courier New",monospace;letter-spacing:.12em}.powerLabel small{color:#555}
+
+/* Shared retro-OS chrome for boot, login, shutdown and power-off screens */
+#boot,#login,.shutdown{background:#173b91;place-items:center}
+#boot::before,#login::before,.shutdown::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,#4d72ad22,transparent 55%);pointer-events:none}
+#boot .bootbox,.loginbox,.shutdownbox{position:relative;width:min(680px,calc(100dvw - 28px));box-sizing:border-box;background:#d6d6d6;color:#111;border:2px outset #fff;box-shadow:7px 8px 18px #0008;padding:0;text-align:left}
+#boot .bootbar,.shutdownbar{height:28px;box-sizing:border-box;background:linear-gradient(90deg,#143b8f,#4777c6);color:#fff;display:flex;align-items:center;padding:2px 7px;font-weight:bold;font-size:13px}
+#boot .bootcontent,.shutdowncontent{padding:28px;text-align:center;background:#d8d8d8;border:2px inset #aaa;margin:8px}
+#boot .bootname{font-family:"Courier New",Tahoma,monospace;color:#111;text-shadow:2px 2px #fff;font-size:clamp(3.2rem,11vw,8.5rem);line-height:1.05}
+#boot .bootsub{color:#173b91}.boothint{color:#555}
+#login{background:#173b91}.loginbox{width:min(560px,calc(100dvw - 28px));padding:0}.loginhead{height:28px;box-sizing:border-box;padding:6px 7px;font-size:13px;border-bottom:0}.loginbody{margin:8px;padding:20px;background:#d8d8d8;border:2px inset #aaa}.loginfields input{box-sizing:border-box}.loginbtn{border:2px outset #fff;background:#c8c8c8}.loginbtn:active{border-style:inset}
+.shutdownbox{width:min(620px,calc(100dvw - 28px));}.shutdowncontent{padding:30px}.shutdown h1{font-size:24px;color:#111;margin:0 0 12px}.shutdown p{color:#444}
+#poweredOff{background:#050505;place-items:center}.powerLabel{color:#888}
+
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+<div id="crt" aria-hidden="true"></div>
+
+<section id="boot" role="dialog" aria-label="Welcome screen">
+  <div class="bootbox">
+    <div class="bootbar">AYUSH-PC — Welcome</div>
+    <div class="bootcontent">
+      <div class="bootname">Ayush Joshi</div>
+      <div class="bootsub">GRC Analyst — Blue Team in Progress.</div>
+      <div class="boothint">Click anywhere to start</div>
+    </div>
+  </div>
+</section>
+<section id="login" role="dialog" aria-modal="true" aria-labelledby="login-title"><div class="loginbox"><div class="loginhead" id="login-title">Windows XP Professional — Log On</div><div class="loginbody"><div class="useravatar" aria-hidden="true">👤</div><div class="loginfields"><label for="username">User name</label><input id="username" value="Ayush" readonly aria-label="Username"><label for="password">Password</label><input id="password" type="password" autocomplete="off" aria-describedby="passwordHint" aria-label="Decorative password field"><div class="loginhint" id="passwordHint">hint: it's fake, just hit enter</div><button class="loginbtn" id="loginBtn" type="button">Log On</button></div></div></div></section>
+
+<main id="desktop" aria-label="Ayush Joshi retro desktop">
+  <div class="desktop-grid" id="icons">
+    <button class="icon" data-open="education" aria-label="Open Education.txt"><span class="ico file"></span><span class="label">Education.txt</span></button>
+    <button class="icon" data-open="skills" aria-label="Open Skills.exe"><span class="ico pc"></span><span class="label">Skills.exe</span></button>
+    <button class="icon" data-open="projects" aria-label="Open My Projects folder"><span class="ico folder"></span><span class="label">My Projects</span></button>
+    <button class="icon" data-open="chat" aria-label="Open Yahoo Messenger chat"><span class="ico paint"></span><span class="label">Ayush Messenger</span></button>
+    <button class="icon" data-open="recycle" aria-label="Open Recycle Bin"><span class="ico recycle"></span><span class="label">Recycle Bin</span></button>
+    <button class="icon" data-open="about" aria-label="Open About This PC"><span class="ico pc"></span><span class="label">About This PC</span></button>
+    <button class="icon" data-open="music" aria-label="Open Dial-Up Music"><span class="ico file"></span><span class="label">dialup.wav</span></button>
+    <button class="icon" data-open="antivirus" aria-label="Open antivirus status"><span class="ico file"></span><span class="label">Norton-ish</span></button>
+    <button class="icon" data-open="resume" aria-label="Open Resume.pdf"><span class="ico file"></span><span class="label">Resume.pdf</span></button>
+  </div>
+
+  <section class="window" id="education" aria-labelledby="education-title">
+    <header class="titlebar"><span class="titletext" id="education-title">Education.txt — Notepad</span><span class="winbuttons"><button data-min="education" aria-label="Minimize Education">_</button><button data-max="education" aria-label="Maximize education" aria-pressed="false">□</button><button data-close="education" aria-label="Close Education">×</button></span></header>
+    <div class="winbody"><div class="notepad">AYUSH JOSHI
+==============================
+
+ACADEMIC TIMELINE
+
+2023 — 2027
+B.Tech — Computer Science & Design
+CVM University, Gujarat
+Current status: Final year
+Semester: 7
+CGPA: 7.86
+
+Earlier
+Diploma in Information Technology
+Gujarat Technological University
+
+FOCUS
+Governance, Risk & Compliance (GRC)
+Blue Team / Security Operations in progress
+
+A very early-2000s computer would probably
+save this as "Education.txt" and call it a day.</div></div>
+  </section>
+
+  <section class="window" id="skills" aria-labelledby="skills-title">
+    <header class="titlebar"><span class="titletext" id="skills-title">Skills.exe — System Properties</span><span class="winbuttons"><button data-min="skills" aria-label="Minimize Skills">_</button><button data-max="skills" aria-label="Maximize skills" aria-pressed="false">□</button><button data-close="skills" aria-label="Close Skills">×</button></span></header>
+    <div class="winbody"><div class="props"><h3>Security & Design Capability Monitor</h3><p style="font-size:12px">Loading personal skill profile... complete.</p>
+      <div class="skill"><div class="skill-row"><span>GRC / Risk / Compliance</span><span>Advanced</span></div><div class="bar"><i data-w="88%"></i></div></div>
+      <div class="skill"><div class="skill-row"><span>Blue Team / SOC concepts</span><span>Growing</span></div><div class="bar"><i data-w="70%"></i></div></div>
+      <div class="skill"><div class="skill-row"><span>Red Team / Pentesting</span><span>Working knowledge</span></div><div class="bar"><i data-w="48%"></i></div></div>
+      <div class="skill"><div class="skill-row"><span>Digital Forensics</span><span>Working knowledge</span></div><div class="bar"><i data-w="56%"></i></div></div>
+      <div class="skill"><div class="skill-row"><span>UI / Visual Design</span><span>Practical</span></div><div class="bar"><i data-w="64%"></i></div></div>
+    </div></div>
+  </section>
+
+  <section class="window" id="projects" aria-labelledby="projects-title">
+    <header class="titlebar"><span class="titletext" id="projects-title">My Projects — C:\Ayush\Cybersecurity</span><span class="winbuttons"><button data-min="projects" aria-label="Minimize Projects">_</button><button data-max="projects" aria-label="Maximize projects" aria-pressed="false">□</button><button data-close="projects" aria-label="Close Projects">×</button></span></header>
+    <div class="winbody"><div class="projects" id="projectGrid"></div></div>
+  </section>
+
+  <section class="window" id="chat" aria-labelledby="chat-title">
+    <header class="titlebar"><span class="titletext" id="chat-title">Ayush Messenger — Online</span><span class="winbuttons"><button data-min="chat" aria-label="Minimize Messenger">_</button><button data-max="chat" aria-label="Maximize chat" aria-pressed="false">□</button><button data-close="chat" aria-label="Close Messenger">×</button></span></header>
+    <div class="winbody"><div class="chat" id="chatlog" aria-live="polite"></div>
+      <div class="chatbar"><input id="chatInput" aria-label="Local fake chat message" placeholder="type something..."><button id="chatSend">Send</button></div>
+    </div>
+  </section>
+
+  <section class="window" id="recycle" aria-labelledby="recycle-title">
+    <header class="titlebar"><span class="titletext" id="recycle-title">Recycle Bin</span><span class="winbuttons"><button data-min="recycle" aria-label="Minimize Recycle Bin">_</button><button data-max="recycle" aria-label="Maximize recycle" aria-pressed="false">□</button><button data-close="recycle" aria-label="Close Recycle Bin">×</button></span></header>
+    <div class="winbody"><div class="recycle"><div class="deleted" id="deletedResume" role="button" tabindex="0" aria-label="Open deleted resume draft"><span class="ico file"></span><div><b>resume_final_FINAL2.txt</b><br><small>Deleted because "final2" was not, in fact, final.</small></div></div></div></div>
+  </section>
+
+  <section class="window" id="about" aria-labelledby="about-title">
+    <header class="titlebar"><span class="titletext" id="about-title">About This PC</span><span class="winbuttons"><button data-min="about" aria-label="Minimize About This PC">_</button><button data-max="about" aria-label="Maximize about" aria-pressed="false">□</button><button data-close="about" aria-label="Close About This PC">×</button></span></header>
+    <div class="winbody"><div class="about"><h2 style="margin-top:0">AYUSH-PC</h2><p>Property of Ayush Joshi.</p><div class="spec">SYSTEM: Early-2000s Indian Home Computer<br>OS: Windows XP-ish (emotionally)<br>PROCESSOR: Curiosity @ 3.2 GHz<br>RAM: Enough for 17 open Notepad files<br>NETWORK: Broadband pretending to be dial-up<br>SECURITY STATUS: 0 threats found — clean record<br>USER: Ayush</div><hr><p>This desktop is the portfolio. No frameworks. No build step. Just files, folders, questionable gradients and a little nostalgia.</p></div></div>
+  </section>
+
+  <section class="window" id="music" aria-labelledby="music-title">
+    <header class="titlebar"><span class="titletext" id="music-title">dialup.wav — Media Player</span><span class="winbuttons"><button data-min="music" aria-label="Minimize Music">_</button><button data-max="music" aria-label="Maximize music" aria-pressed="false">□</button><button data-close="music" aria-label="Close Music">×</button></span></header>
+    <div class="winbody"><div class="about"><h3 style="margin-top:0">Retro Connection Sound</h3><p id="musicStatus">Offline fallback ready. No audio files or network required.</p><button id="dialup" style="border:2px outset #fff;background:#ccc;padding:8px 12px">▶ Play Dial-Up</button> <button id="musicStop" style="border:2px outset #fff;background:#ccc;padding:8px 12px">■ Stop</button><p style="font-size:11px;color:#666">The sound is synthesized locally with Web Audio when available.</p></div></div>
+  </section>
+
+  <section class="window" id="resume" aria-labelledby="resume-title"><header class="titlebar"><span class="titletext" id="resume-title">Resume.pdf — Adobe Acrobat-ish</span><span class="winbuttons"><button data-min="resume" aria-label="Minimize Resume">_</button><button data-max="resume" aria-label="Maximize Resume" aria-pressed="false">□</button><button data-close="resume" aria-label="Close Resume">×</button></span></header><div class="winbody"><div class="doc"><h2>Ayush Joshi — Resume.pdf</h2><div class="meta">C:\Ayush\Resume\AyushJoshi_GRC_Resume.pdf • Local PDF document</div><p>A concise professional resume covering Ayush's Computer Science & Design background, cybersecurity/GRC focus, projects, skills and practical work.</p><p><b>This desktop does not embed the resume.</b> The button below opens the local PDF in a new browser tab.</p><p><button class="loginbtn" id="openResumePdf" type="button">Open AyushJoshi_GRC_Resume.pdf</button></p></div></div></section>
+<section class="window" id="antivirus" aria-labelledby="av-title">
+    <header class="titlebar"><span class="titletext" id="av-title">Norton-ish Security Center</span><span class="winbuttons"><button data-min="antivirus" aria-label="Minimize antivirus">_</button><button data-max="antivirus" aria-label="Maximize antivirus" aria-pressed="false">□</button><button data-close="antivirus" aria-label="Close antivirus">×</button></span></header>
+    <div class="winbody"><div class="av"><div class="ok">✓</div><h2>Your computer is clean.</h2><p>Last simulated scan: just now.</p><p><b>0 threats found.</b> 0 suspicious policies. 0 overdue controls.</p><p style="font-size:11px;color:#666">A tiny GRC joke. This is not real antivirus software.</p></div></div>
+  </section>
+
+  <div id="startMenu" role="menu" aria-label="Start menu">
+    <div class="start-head">Ayush Joshi <small>All Programs • Gujarat • 2000s mode</small></div>
+    <div class="menu-item" id="programsItem" role="menuitem">Programs <span>▶</span></div>
+    <div class="menu-item" data-open="about" role="menuitem">About This PC</div>
+    <div class="menu-item" id="shutdownBtn" role="menuitem">Shut Down <span>⏻</span></div>
+  </div>
+
+  <div id="ctx" role="menu" aria-label="Desktop context menu">
+    <div class="ctx-item" data-open="about">Open About This PC</div>
+    <div class="ctx-item" id="refresh">Refresh</div><div class="ctx-sep"></div>
+    <div class="ctx-item" id="changeBg">Change Background</div>
+    <div class="ctx-item" id="dialToggle">Dial-up sound: ON</div>
+  </div>
+  <div id="wallpapers" aria-label="Wallpaper choices">
+    <b>Choose desktop background</b>
+    <div class="wall" data-bg="teal">Classic Cyber Café Teal</div>
+    <div class="wall" data-bg="blue">Blue Screen of Nostalgia</div>
+    <div class="wall" data-bg="brown">Dusty Beige Desktop</div>
+  </div>
+
+  <div id="taskbar"><button id="startBtn" aria-expanded="false"><span class="logo">⊞</span> Start</button><div id="tasks"></div><div id="clock">12:00 PM</div></div>
+</main>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="matrix" aria-hidden="true"><canvas id="matrixCanvas"></canvas></div>
+<div class="shutdown" id="shutdown"><div class="shutdownbox"><div class="shutdownbar">Windows XP — Shut Down</div><div class="shutdowncontent"><h1>It is now safe to turn off your computer.</h1><p>Saving portfolio... shutting down...</p></div></div></div><div id="poweredOff" aria-hidden="true"><button id="powerOn" aria-label="Power on Ayush-PC">⏻</button><div class="powerLabel">AYUSH-PC<br><small>press power to start</small></div></div>
+
+<script>
+"use strict";
+const projects=[
+ ["Risk Register","A practical risk register documenting assets, threats, likelihood, impact, owners and treatment decisions for a security-focused environment."],
+ ["ISO 27001 Gap Analysis","A structured gap review mapped to ISO/IEC 27001 controls, highlighting evidence gaps, ownership and practical remediation priorities."],
+ ["Access Control Policy","An internal access-control policy covering least privilege, account lifecycle, role ownership and review expectations."],
+ ["Internal Audit Simulation","A simulated internal audit workflow showing evidence collection, control testing, findings and corrective-action thinking."],
+ ["TPRM Framework","A third-party risk management framework for assessing vendors, security requirements, due diligence and ongoing monitoring."],
+ ["PCI DSS Gap Analysis","A PCI DSS-oriented gap assessment translating security requirements into evidence, ownership and remediation work."],
+ ["SOC 2 Readiness Assessment","A readiness-style review of security controls and evidence against SOC 2 expectations, focused on practical preparation."]
+];
+const pdfFiles=["PaySafe India — Risk Register.pdf","PaySafe India — ISO27001 Gap Analysis.pdf","PaySafe India — Access Control Policy.pdf","PaySafe India — Internal Audit Report.pdf","PaySafe India — TPRM Framework.pdf","PaySafe India — PCI DSS Gap Analysis.pdf","PaySafe India — SOC2 Readiness Assessment.pdf"];
+const resumePdf="AyushJoshi_GRC_Resume.pdf";
+const linkedin="https://www.linkedin.com/in/ayush-joshi-sec?utm_source=share_via&utm_content=profile&utm_medium=member_android";
+const email="mailto:joshiiayush@gmail.com";
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const boot=$("#boot"), reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+if(reduce) document.body.classList.add("reduce");
+
+function toast(t){const x=$("#toast");x.textContent=t;x.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove("show"),1700)}
+function beep(freq=440,dur=.055){
+ try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=beep.ctx||(beep.ctx=new C()),o=c.createOscillator(),g=c.createGain();o.frequency.value=freq;o.type="square";g.gain.setValueAtTime(.025,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+dur)}catch(e){}
+}
+let cascadeIndex=0;const windowState=new Map();
+function desktopBounds(){
+ const d=$("#desktop"),r=d.getBoundingClientRect();
+ return {width:r.width,height:r.height};
+}
+function clampWindow(w){
+ const taskH=document.getElementById("taskbar")?.offsetHeight||40;
+ const {width,height}=desktopBounds();
+ const maxX=Math.max(6,width-w.offsetWidth-6),maxY=Math.max(6,height-w.offsetHeight-taskH-6);
+ w.style.left=Math.max(6,Math.min(parseFloat(w.style.left)||6,maxX))+"px";
+ w.style.top=Math.max(6,Math.min(parseFloat(w.style.top)||6,maxY))+"px";
+}
+function cascadeWindow(w){
+ const taskH=document.getElementById("taskbar")?.offsetHeight||40;
+ const {width,height}=desktopBounds();
+ const n=cascadeIndex++%7,step=24,baseX=70,baseY=55;
+ const maxX=Math.max(8,width-w.offsetWidth-8),maxY=Math.max(8,height-w.offsetHeight-taskH-8);
+ w.style.left=Math.min(baseX+n*step,maxX)+"px";
+ w.style.top=Math.min(baseY+n*step,maxY)+"px";
+}
+function clearWindowMotion(w){if(w._motionTimer)clearTimeout(w._motionTimer);w._motionTimer=null;w.classList.remove("window-opening","window-minimizing","window-restoring","window-closing");w.style.removeProperty("--task-dx");w.style.removeProperty("--task-dy")}
+function finishWindowMotion(w,action){clearWindowMotion(w);if(action==="hide"||action==="close"){w.style.display="none";w.classList.remove("open")}else{w.style.display="block";w.classList.add("open");w.style.opacity="";w.style.transform=""}}
+function animateWindow(w,className,action,duration){clearWindowMotion(w);if(reduce){finishWindowMotion(w,action);return}w.classList.add(className);w._motionTimer=setTimeout(()=>finishWindowMotion(w,action),duration)}
+function openWin(id){const w=$("#"+id);if(!w)return;const was=w.classList.contains("open");clearWindowMotion(w);w.classList.add("open");w.style.display="block";if(!was&&!w.classList.contains("maximized"))cascadeWindow(w);bring(w);if(!was)animateWindow(w,"window-opening","show",180);if(id==="skills")$$("#skills .bar i").forEach(i=>i.style.width=i.dataset.w);if(id==="chat")startChat();addTask(id,false);beep(600,.04);toast((w.querySelector(".titletext")?.textContent||id)+" opened")}
+function closeWin(id){const w=$("#"+id);if(!w)return;clearWindowMotion(w);w.classList.remove("maximized");windowState.delete(id);const b=$("#tasks [data-task='"+id+"']");if(b)b.remove();animateWindow(w,"window-closing","close",180);beep(240,.04);toast("Window closed")}
+function minimizeWin(id){const w=$("#"+id);if(!w)return;addTask(id,true);if(reduce){finishWindowMotion(w,"hide")}else{const b=$("#tasks [data-task='"+id+"']"),wr=w.getBoundingClientRect(),tr=b?.getBoundingClientRect();clearWindowMotion(w);if(tr){w.style.setProperty("--task-dx",(tr.left+tr.width/2-(wr.left+wr.width/2))+"px");w.style.setProperty("--task-dy",(tr.top+tr.height/2-(wr.top+wr.height/2))+"px")}w.classList.add("window-minimizing");w._motionTimer=setTimeout(()=>finishWindowMotion(w,"hide"),190)}toast("Window minimized");beep(300,.04)}
+function restoreWin(id){const w=$("#"+id);if(!w)return;addTask(id,false);if(reduce){finishWindowMotion(w,"show")}else{const b=$("#tasks [data-task='"+id+"']");clearWindowMotion(w);w.style.display="block";w.classList.add("open");bring(w);const wr=w.getBoundingClientRect(),tr=b?.getBoundingClientRect();if(tr){w.style.setProperty("--task-dx",(tr.left+tr.width/2-(wr.left+wr.width/2))+"px");w.style.setProperty("--task-dy",(tr.top+tr.height/2-(wr.top+wr.height/2))+"px")}w.classList.add("window-restoring");w._motionTimer=setTimeout(()=>finishWindowMotion(w,"show"),190)}toast("Window restored");beep(520,.04)}
+function toggleMax(id){const w=$("#"+id);if(!w)return;let st=windowState.get(id)||{max:false};const btn=w.querySelector("[data-max]");if(!st.max){st.left=w.style.left;st.top=w.style.top;st.width=w.style.width;st.height=w.style.height;st.max=true;w.classList.add("maximized");if(btn){btn.textContent="❐";btn.setAttribute("aria-label","Restore "+id);btn.setAttribute("aria-pressed","true")}}else{w.classList.remove("maximized");st.max=false;w.style.left=st.left||"";w.style.top=st.top||"";w.style.width=st.width||"";w.style.height=st.height||"";if(btn){btn.textContent="□";btn.setAttribute("aria-label","Maximize "+id);btn.setAttribute("aria-pressed","false")}clampWindow(w)}windowState.set(id,st);bring(w);addTask(id,false);beep(st.max?760:500,.05);toast(st.max?"Window maximized":"Window restored")}
+function bring(w){$$('.window').forEach(x=>x.style.zIndex=1000);w.style.zIndex=1100}
+function addTask(id,minimized){const t=$("#tasks");let b=t.querySelector(`[data-task="${id}"]`);if(!b){b=document.createElement("button");b.className="task";b.dataset.task=id;b.textContent=$("#"+id+" .titletext").textContent;t.appendChild(b)}b.classList.toggle("active",!minimized);b.onclick=()=>{const w=$("#"+id);if(w.style.display==="none"||!w.classList.contains("open"))restoreWin(id);else if(Number(w.style.zIndex)===1100){minimizeWin(id)}else{bring(w);addTask(id,false);toast("Window brought to front")}}}
+$$('.icon').forEach(i=>{i.addEventListener('dblclick',()=>openWin(i.dataset.open));i.addEventListener('click',()=>{$$('.icon').forEach(x=>x.classList.remove('selected'));i.classList.add('selected');if(innerWidth<=700)openWin(i.dataset.open)})});
+$$('[data-open]').forEach(x=>{if(!x.classList.contains('icon'))x.addEventListener('click',e=>{e.stopPropagation();$('#startMenu').classList.remove('open');openWin(x.dataset.open)})});
+$$('[data-close]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();closeWin(b.dataset.close)}));
+$$('[data-min]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();minimizeWin(b.dataset.min)}));
+$$('[data-max]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();toggleMax(b.dataset.max)}));
+$$('.window').forEach(w=>w.addEventListener('mousedown',()=>bring(w)));
+projects.forEach((p,i)=>{
+ const d=document.createElement("button");d.className="project";d.dataset.project=i;d.setAttribute("aria-label","Open "+p[0]);
+ d.innerHTML=`<span class="ico file"></span><br><small>${p[0]}</small>`;
+ d.onclick=()=>openProject(i);$("#projectGrid").appendChild(d)
+});
+function openProject(i){
+ const p=projects[i], id="projectDoc";
+ let w=$("#projectDoc");if(!w){w=document.createElement("section");w.className="window";w.id=id;w.innerHTML=`<header class="titlebar"><span class="titletext" id="projectDoc-title"></span><span class="winbuttons"><button data-min="projectDoc" aria-label="Minimize project document">_</button><button data-max="projectDoc" aria-label="Maximize project document" aria-pressed="false">□</button><button data-close="projectDoc" aria-label="Close project document">×</button></span></header><div class="winbody"><div class="doc" id="projectDocBody"></div></div>`;document.querySelector("#desktop").appendChild(w);w.querySelector("[data-close]").onclick=()=>closeWin(id);w.querySelector("[data-min]").onclick=()=>minimizeWin(id);w.querySelector("[data-max]").onclick=()=>toggleMax(id)}
+ $("#projectDoc-title").textContent=p[0]+" — Microsoft Word";
+ const pdfName=pdfFiles[i];
+ $("#projectDocBody").innerHTML=`<h2>${p[0]}</h2><div class="meta">C:\Ayush\My Projects\${pdfName} • Read-only preview</div><p>${p[1]}</p><p><b>Portfolio note:</b> This project is presented as a practical GRC/security artifact rather than a generic classroom demo.</p><span class="stamp">PROJECT FILE</span><p><button class="loginbtn" type="button" data-pdf="${pdfName}" data-pdf-name="${pdfName}">Open ${pdfName} →</button></p>`;
+ const pdfButton=$("#projectDocBody [data-pdf]");
+ pdfButton.onclick=()=>openLocalPdf(pdfButton.dataset.pdf,pdfButton.dataset.pdfName,"projectDoc");
+ openWin(id)
+}
+
+function openLocalPdf(path,filename,id){const w=$("#"+id);if(!w)return;const body=w.querySelector(".doc")||w.querySelector(".winbody");if(!body)return;const original=body.innerHTML;body.innerHTML=`<div class="pdf-loading"><div class="loading-caption">Opening ${filename}...</div><div class="bar"><i></i></div></div>`;const fill=body.querySelector(".bar i"),openPdf=()=>{const a=document.createElement("a");a.href=path;a.target="_blank";a.rel="noopener";a.click();body.innerHTML=original};if(reduce){fill.style.width="100%";openPdf();return}requestAnimationFrame(()=>{fill.style.width="100%"});setTimeout(openPdf,550)}
+$("#openResumePdf").onclick=()=>openLocalPdf(resumePdf,"AyushJoshi_GRC_Resume.pdf","resume");
+
+let chatStarted=false;
+const chatLines=[
+ ["Ayush","yo 👋 welcome to my PC."],["Ayush","I'm Ayush — final-year CS & Design student."],
+ ["Ayush","Most days I'm somewhere between GRC, risk registers and figuring out why a control has no evidence 😅"],
+ ["Ayush","I’m aiming at GRC + Blue Team, so yeah... less 'hack the planet', more 'prove the control works'. 😎"],
+ ["Ayush","Anyway, click around. This computer *is* the portfolio."],["Ayush","And yes, the dial-up noise is intentional."]
+];
+function startChat(){if(chatStarted)return;chatStarted=true;const log=$("#chatlog");chatLines.forEach((m,i)=>setTimeout(()=>{const d=document.createElement("div");d.className="msg "+(i%2?"me":"");d.innerHTML=`<b>${m[0]}</b><br><span class="bubble">${m[1]}</span>`;log.appendChild(d);log.scrollTop=log.scrollHeight;beep(520+i*35,.035)},300+i*650))}
+$("#chatSend").onclick=()=>{const input=$("#chatInput"),v=input.value.trim();if(!v)return;const d=document.createElement("div");d.className="msg me";d.innerHTML=`<b>Ayush-PC</b><br><span class="bubble">${escapeHtml(v)}</span>`;$("#chatlog").appendChild(d);input.value="";toast("Message stayed on this computer.");beep(700,.04)}
+$("#chatInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("#chatSend").click()});
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+$("#startBtn").onclick=()=>{const m=$("#startMenu");m.classList.toggle("open");$("#startBtn").setAttribute("aria-expanded",m.classList.contains("open"));beep(350,.04)}
+$("#shutdownBtn").onclick=()=>{$("#startMenu").classList.remove("open");$("#shutdown").classList.add("show");beep(180,.15);setTimeout(()=>{$("#shutdown").classList.remove("show");$("#poweredOff").classList.add("show");$("#poweredOff").setAttribute("aria-hidden","false");bootStage="off"},reduce?1:1600)}
+$("#programsItem").onclick=()=>{openWin("projects");toast("Programs → My Projects")}
+$("#deletedResume").onclick=$("#deletedResume").onkeydown=(e)=>{if(e.type==="click"||e.key==="Enter"||e.key===" "){openWin("resumeJoke")}};
+const r=$("#recycle");
+$("#deletedResume").addEventListener("click",()=>{
+ let w=$("#resumeJoke");if(w)return;
+ w=document.createElement("section");w.className="window";w.id="resumeJoke";w.innerHTML=`<header class="titlebar"><span class="titletext">resume_final_FINAL2.txt — Notepad</span><span class="winbuttons"><button data-min="resumeJoke" aria-label="Minimize joke resume">_</button><button data-max="resumeJoke" aria-label="Maximize joke resume" aria-pressed="false">□</button><button data-close="resumeJoke" aria-label="Close joke resume">×</button></span></header><div class="winbody"><div class="notepad">OBJECTIVE:\\nGet an internship.\\n\\nSKILLS:\\nGRC, cybersecurity, coffee, Ctrl+C / Ctrl+V.\\n\\nSTATUS:\\nDefinitely final this time.\\n\\n[This file has been deleted for quality assurance.]</div></div>`;$("#desktop").appendChild(w);w.querySelector("[data-close]").onclick=()=>closeWin("resumeJoke");w.querySelector("[data-min]").onclick=()=>minimizeWin("resumeJoke");w.querySelector("[data-max]").onclick=()=>toggleMax("resumeJoke");openWin("resumeJoke")
+});
+
+document.addEventListener("contextmenu",e=>{if(e.target.closest(".window,#taskbar,#startMenu"))return;e.preventDefault();const c=$("#ctx");c.style.left=Math.min(e.clientX,innerWidth-200)+"px";c.style.top=Math.min(e.clientY,innerHeight-180)+"px";c.style.display="block";beep(300,.03)});
+document.addEventListener("click",e=>{if(!e.target.closest("#ctx"))$("#ctx").style.display="none"});
+$("#refresh").onclick=()=>{toast("Desktop refreshed. Nothing important was lost.");beep(480,.04)}
+$("#changeBg").onclick=()=>{$("#wallpapers").style.display="block";$("#ctx").style.display="none"}
+$$(".wall").forEach(w=>w.onclick=()=>{
+ const b=w.dataset.bg;const d=$("#desktop");
+ if(b==="teal"){d.style.background="linear-gradient(145deg,#2c8583,#1f6f73 52%,#17585d)"}
+ if(b==="blue"){d.style.background="linear-gradient(145deg,#2d6aa0,#164b79 55%,#12365b)"}
+ if(b==="brown"){d.style.background="linear-gradient(145deg,#9a8a68,#74654e 55%,#51483b)"}
+ $("#wallpapers").style.display="none";toast("Background changed.");beep(520,.04)
+});
+$("#dialToggle").onclick=()=>{dialEnabled=!dialEnabled;$("#dialToggle").textContent="Dial-up sound: "+(dialEnabled?"ON":"OFF");$("#ctx").style.display="none";toast("Dial-up sound "+(dialEnabled?"enabled":"muted"))}
+let dialEnabled=true;
+function dialup(){
+ if(!dialEnabled){toast("Dial-up sound is muted.");return}
+ try{
+ const C=window.AudioContext||window.webkitAudioContext;if(!C){toast("Offline audio unavailable.");return}
+ const c=dialup.ctx||(dialup.ctx=new C()),now=c.currentTime;
+ const tones=[[350,.0,.35],[700,.35,.65],[1100,.65,.92],[520,.92,1.18],[1500,1.18,1.36],[760,1.36,1.6],[410,1.6,2.05]];
+ tones.forEach(([f,a,b])=>{const o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.setValueAtTime(f,now+a);g.gain.setValueAtTime(.0001,now+a);g.gain.exponentialRampToValueAtTime(.055,now+a+.015);g.gain.exponentialRampToValueAtTime(.0001,now+b);o.connect(g).connect(c.destination);o.start(now+a);o.stop(now+b+.02)});
+ $("#musicStatus").textContent="Playing local synthesized dial-up connection sound...";setTimeout(()=>$("#musicStatus").textContent="Offline fallback ready. No audio files or network required.",2200)
+ }catch(e){toast("Audio could not start — offline fallback remains available.")}
+}
+$("#dialup").onclick=dialup;$("#musicStop").onclick=()=>{toast("Playback stopped.");$("#musicStatus").textContent="Offline fallback ready. No audio files or network required."};
+
+let drag={on:false,w:null,dx:0,dy:0,pointerId:null};
+document.addEventListener("pointerdown",e=>{
+ const t=e.target.closest(".titlebar"); if(!t)return;
+ if(e.target.closest("button,a,input,select,textarea"))return;
+ const w=t.closest(".window");if(!w||w.classList.contains("maximized"))return;
+ bring(w); const r=w.getBoundingClientRect();
+ drag={on:true,w,dx:e.clientX-r.left,dy:e.clientY-r.top,pointerId:e.pointerId};
+ try{t.setPointerCapture(e.pointerId)}catch(_){ }
+ e.preventDefault();
+});
+document.addEventListener("pointermove",e=>{
+ if(!drag.on||e.pointerId!==drag.pointerId)return;
+ const w=drag.w, taskH=document.getElementById("taskbar")?.offsetHeight||40, d=$("#desktop"),r=d.getBoundingClientRect();
+ const maxX=Math.max(5,r.width-w.offsetWidth-5), maxY=Math.max(5,r.height-w.offsetHeight-taskH-5);
+ w.style.left=Math.max(5,Math.min(maxX,e.clientX-r.left-drag.dx))+"px";
+ w.style.top=Math.max(5,Math.min(maxY,e.clientY-r.top-drag.dy))+"px";
+});
+document.addEventListener("pointerup",e=>{if(e.pointerId===drag.pointerId)drag={on:false,w:null,dx:0,dy:0,pointerId:null}});
+
+let konami=[],code=[38,38,40,40,37,39,37,39,66,65];
+let bootStage="splash";function showLogin(){if(bootStage!=="splash")return;bootStage="login";boot.classList.add("hidden");$("#login").classList.add("show");setTimeout(()=>$("#password").focus(),reduce?0:100);toast("Welcome. Log on to continue.");beep(740,.07)}function finishLogin(){if(bootStage!=="login")return;bootStage="desktop";$("#login").classList.remove("show");toast("Logged on as Ayush.");beep(820,.07)}boot.addEventListener("click",showLogin);$("#loginBtn").addEventListener("click",finishLogin);$("#password").addEventListener("keydown",e=>{if(e.key==="Enter")finishLogin()});document.addEventListener("keydown",e=>{if(bootStage!=="desktop")return;konami.push(e.keyCode);if(konami.length>10)konami.shift();if(konami.join(",")===code.join(","))matrixRain();if(e.key==="Escape"){$("#startMenu").classList.remove("open");$("#ctx").style.display="none";$$('.window.open').forEach(w=>closeWin(w.id))}});
+$("#powerOn").addEventListener("click",()=>{$("#poweredOff").classList.remove("show");$("#poweredOff").setAttribute("aria-hidden","true");$("#boot").classList.remove("hidden");$("#login").classList.remove("show");bootStage="splash";$$('.window').forEach(w=>{w.style.display="none";w.classList.remove("open","maximized")});$("#tasks").innerHTML="";windowState.clear();cascadeIndex=0;toast("Power on.");beep(740,.07)});
+function matrixRain(){
+ const wrap=$("#matrix"),cv=$("#matrixCanvas"),ctx=cv.getContext("2d");wrap.style.display="block";wrap.setAttribute("aria-hidden","false");cv.width=innerWidth;cv.height=innerHeight;
+ const cols=Math.floor(cv.width/14),ys=Array(cols).fill(0);
+ let run=true;const end=()=>{run=false;wrap.style.display="none";wrap.setAttribute("aria-hidden","true")};wrap.onclick=end;setTimeout(end,2600);
+ function draw(){if(!run)return;ctx.fillStyle="rgba(0,0,0,.12)";ctx.fillRect(0,0,cv.width,cv.height);ctx.fillStyle="#6f6";ctx.font="14px monospace";ys.forEach((y,i)=>{ctx.fillText(String.fromCharCode(0x30A0+Math.random()*96),i*14,y);if(y>cv.height&&Math.random()>.975)ys[i]=0;ys[i]+=14});requestAnimationFrame(draw)}draw();toast("Konami code accepted. Tiny cyber mode engaged.");beep(900,.08)
+}
+
+function clock(){const d=new Date();let h=d.getHours(),m=String(d.getMinutes()).padStart(2,"0"),ap=h>=12?"PM":"AM";h=h%12||12;$("#clock").textContent=`${h}:${m} ${ap}`}
+clock();setInterval(clock,1000);
+window.addEventListener("resize",()=>{$$(".window.open").forEach(clampWindow);});
+document.addEventListener("click",e=>{if(e.target.closest("button,.icon,.ctx-item,.wall"))beep(520,.025)});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.matches(".icon"))e.target.dispatchEvent(new Event("dblclick"))});
+</script>
+</body>
+</html>
